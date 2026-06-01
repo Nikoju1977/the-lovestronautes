@@ -289,6 +289,11 @@ input[type=range]::-moz-range-thumb{
 
 ::-webkit-scrollbar{width:2px}
 ::-webkit-scrollbar-thumb{background:var(--uv);border-radius:2px}
+
+/* ── Skeleton Loader ─────────────────────────── */
+.skeleton{background:linear-gradient(90deg,rgba(0,255,157,.07) 25%,rgba(0,255,157,.15) 50%,rgba(0,255,157,.07) 75%);background-size:200% 100%;animation:skel-wave 1.4s infinite;border-radius:6px;min-height:1em}
+@keyframes skel-wave{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
 </style>
   <meta name="description" content="Thelovestronautes — Musique psytrance électronique à 133 BPM. Univers sonore et visuel.">
   <meta name="author" content="Nicolas Julienne — Studio Niko Design">
@@ -300,8 +305,13 @@ input[type=range]::-moz-range-thumb{
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Lovestronautes | Psytrance 133 BPM">
   <meta name="twitter:description" content="Thelovestronautes — projet musical psytrance électronique. La Meilleraye-de-Bretagne, Loire-Atlantique 44.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
-<body>
+<body role="main" aria-label="The Lovestronautes — Psytrance 133 BPM">
+<main id="app" tabindex="-1">
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">The Lovestronautes</h1>
+
 
 <!-- BG canvases -->
 <canvas class="bg-cv" id="cv0"></canvas>
@@ -1103,6 +1113,25 @@ BG.init();
 })();
 
 console.log('%c◈ THELOVESTRONAUTES // NIKO 1977–2026','color:#00ff41;font-weight:900;font-size:13px');
+</script>
+
+</main>
+
+<script>
+if('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const swCode = `
+const CACHE='niko-v1';
+const ASSETS=['./','/index.html'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
+self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
+    `;
+    const blob = new Blob([swCode],{type:'text/javascript'});
+    const swURL = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swURL).catch(()=>{});
+  });
+}
 </script>
 </body>
 </html>
